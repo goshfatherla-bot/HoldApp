@@ -16,21 +16,26 @@ const { exchangeCode, getUserInfo } = require('./_lib/google');
 const { createSession } = require('./_lib/session');
 
 exports.handler = async (event) => {
-  // CORS preflight
+  // Allow OPTIONS (preflight), POST (popup), and GET (redirect)
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: corsHeaders(event), body: '' };
   }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' };
+
+  // Get the code from the body (POST) or the URL (GET)
+  let code = null;
+  if (event.httpMethod === 'POST') {
+    const body = JSON.parse(event.body || '{}');
+    code = body.code;
+  } else if (event.httpMethod === 'GET') {
+    code = event.queryStringParameters.code;
+  }
+
+  if (!code) {
+    return jsonError(400, 'Missing authorization code', event);
   }
 
   try {
-    const body = JSON.parse(event.body || '{}');
-    const { code } = body;
-    if (!code) {
-      return jsonError(400, 'Missing authorization code', event);
-    }
-
+    // ... the rest of the file starts here at Line 34 (const tokens = await exchangeCode(code);)
     // 1. Exchange authorization code → access_token + refresh_token
     const tokens = await exchangeCode(code);
     if (!tokens.access_token) {
@@ -66,11 +71,11 @@ exports.handler = async (event) => {
     });
 
     return {
-      statusCode: 200,
+      statusCode: 302,
       headers: {
         ...corsHeaders(event),
         'Set-Cookie':    cookieStr,
-        'Content-Type':  'application/json',
+        'Location': '/',
       },
       body: JSON.stringify({
         success: true,
@@ -88,12 +93,11 @@ exports.handler = async (event) => {
 };
 
 // ─── helpers ────────────────────────────────────────────────
-
 function corsHeaders(event) {
   const origin = event.headers.origin || event.headers.Origin || '';
   return {
     'Access-Control-Allow-Origin':      origin,
-    'Access-Control-Allow-Methods':     'POST, OPTIONS',
+    'Access-Control-Allow-Methods':     'GET, POST, OPTIONS', // Added GET here
     'Access-Control-Allow-Headers':     'Content-Type',
     'Access-Control-Allow-Credentials': 'true',
   };
