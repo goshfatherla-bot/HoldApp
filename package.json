@@ -1,0 +1,13 @@
+{
+  "name": "hold",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hold — Booking Tracker",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "cookie": "^0.6.0",
+    "googleapis": "^140.0.0",
+    "uuid": "^9.0.0"
+  }
+}
