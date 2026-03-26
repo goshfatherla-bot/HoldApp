@@ -607,7 +607,7 @@
       this._gisClient = google.accounts.oauth2.initCodeClient({
         client_id:    clientId,
         scope:        'openid email profile https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/gmail.send',
-        ux_mode:      'popup',
+        ux_mode: 'redirect',
         redirect_uri: 'https://aesthetic-moonbeam-aa2b20.netlify.app/.netlify/functions/auth-callback',
         callback:     (response) => this.handleGoogleCallback(response),
       });
