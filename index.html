@@ -608,7 +608,7 @@
         client_id:    clientId,
         scope:        'openid email profile https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/gmail.send',
         ux_mode:      'popup',
-        redirect_uri: 'postmessage',
+        redirect_uri: 'https://aesthetic-moonbeam-aa2b20.netlify.app/.netlify/functions/auth-callback',
         callback:     (response) => this.handleGoogleCallback(response),
       });
       // Re-render so the sign-in button becomes active
