@@ -20,8 +20,8 @@ const SESSION_TTL  = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 function store() {
   return getStore({
     name: STORE_NAME,
-    siteID: process.env.SITE_ID,
-    token: process.env.NETLIFY_PURPOSE_TOKEN || process.env.NETLIFY_AUTH_TOKEN
+    siteID: '2b918be9-2dc7-4401-8fa5-41e66feebaad', // Paste the ID you just copied here
+    token: process.env.NETLIFY_AUTH_TOKEN || process.env.NETLIFY_PURPOSE_TOKEN
   });
 }
 
