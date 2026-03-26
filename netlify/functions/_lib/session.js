@@ -18,7 +18,11 @@ const STORE_NAME   = 'hold-sessions';
 const SESSION_TTL  = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 
 function store() {
-  return getStore(STORE_NAME);
+  return getStore({
+    name: STORE_NAME,
+    siteID: process.env.SITE_ID,
+    token: process.env.NETLIFY_PURPOSE_TOKEN || process.env.NETLIFY_AUTH_TOKEN
+  });
 }
 
 /**
