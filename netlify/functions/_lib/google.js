@@ -27,13 +27,15 @@ const SCOPES = [
  * Create a bare OAuth2 client (no credentials attached).
  */
 function createOAuthClient() {
+  // Use the exact URL that is registered in your Google Cloud Console
+  const REDIRECT_URI = 'https://aesthetic-moonbeam-aa2b20.netlify.app/.netlify/functions/auth-callback';
+
   return new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    'postmessage'   // popup-based code flow — no server redirect needed
+    REDIRECT_URI
   );
 }
-
 /**
  * Exchange an authorization code for access + refresh tokens.
  */
